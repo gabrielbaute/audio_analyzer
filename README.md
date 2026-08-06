@@ -149,11 +149,14 @@ $$\text{Centroide} = \frac{\sum_{k=1}^{M} f(k) \cdot \vert{}X(k)\vert{}}{\sum_{k
 * **¿Por qué es útil en playlists?**: Son las métricas clave para listas enfocadas en la **actividad del usuario** (ej. entrenamientos, concentración). Un tema puede tener $120\text{ BPM}$ pero ser suave (bajo ímpetu) o extremadamente agresivo (alto ímpetu). Combinar ambas variables garantiza listas con la energía adecuada en el ritmo.
 
 ---
+
 ## 📚 Agradecimientos y Créditos
 
 Este proyecto utiliza las excepcionales librerías decodificadoras *single-header* de código abierto creadas por **David Reid**:
 
 * [dr_libs](https://github.com/mackron/dr_libs) (`dr_mp3.h`, `dr_wav.h`, `dr_flac.h`), liberadas bajo dominio público / licencia MIT.
+
+---
 
 ### Resumen de términos:
 * **Libertad de uso:** Puedes ejecutar, estudiar y modificar este software libremente.

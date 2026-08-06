@@ -89,8 +89,75 @@ Pasa la ruta del archivo de audio como argumento de la línea de comandos:
 
 ---
 
+## Explicación Detallada de Parámetros y Conceptos
+
+### ¿Qué es DSP y qué hacemos aquí?
+
+**DSP** corresponde a las siglas de ***Digital Signal Processing*** (Procesamiento Digital de Señales).
+
+En nuestro contexto, implica tomar la señal de audio continua en el tiempo, muestrearla a una frecuencia determinada ($f_s = 44100\text{ Hz}$, por ejemplo) y aplicar transformaciones matemáticas (como la Transformada Rápida de Fourier o *FFT*) para analizar el dominio del tiempo y de la frecuencia. Lo que hacemos es cuantificar características físicas y acústicas objetivas del audio para convertirlas en métricas numéricas estructuradas.
+
+---
+
+### Conceptos e Impacto en Recomendación / Listas de Reproducción
+
+#### 1. `rms_energy` (Root Mean Square Energy)
+
+* **¿Qué es?**: La energía de la raíz media cuadrática mide el valor eficaz de la onda de audio. Se calcula mediante la expresión:
+
+$$x_{\text{rms}} = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2}$$
+
+
+* **¿Por qué es útil en playlists?**: A diferencia de los picos puntuales, el RMS mide la potencia constante que el oído humano percibe como **volumen percibido o "fuerza" sonora**. Es vital para evitar saltos bruscos de intensidad entre canciones (volumen coherente) y para clasificar pistas con gran energía constante (rock, EDM, pasos marciales) versus canciones tenues o acústicas.
+
+#### 2. `peak_amplitude` (Amplitud Máxima)
+
+* **¿Qué es?**: El valor absoluto del punto más alto que alcanza la onda en el intervalo $[-1.0, 1.0]$.
+* **¿Por qué es útil en playlists?**: Sirve para detectar si una pista fue grabada con limitación de pico (*clipping*) o si posee picos transitorios muy agresivos (impactos de batería, platillos). En combinación con el RMS, ayuda a evaluar si dos canciones van a "chocar" visual o acústicamente en la transición.
+
+#### 3. `crest_factor_db` (Factor de Cresta)
+
+* **¿Qué es?**: La relación entre el valor pico y el valor RMS expresada en decibelios:
+
+$$\text{Crest Factor (dB)} = 20 \log_{10} \left( \frac{x_{\text{peak}}}{x_{\text{rms}}} \right)$$
+
+
+* **¿Por qué es útil en playlists?**: Es el **medidor directo del rango dinámico**. Un factor de cresta alto (ej. $>15\text{ dB}$) indica música con mucha dinámica (música clásica, jazz acústico) donde hay partes muy suaves y picos fuertes. Un factor de cresta bajo (ej. $<6\text{ dB}$) indica música muy comprimida modernamente (*loudness wars*). Agrupar por factor de cresta asegura que la lista mantenga un "estilo de producción" consistente.
+
+#### 4. `spectral_centroid_hz` (Centroide Espectral)
+
+* **¿Qué es?**: Representa el "centro de masa" del espectro de frecuencias. Se calcula como la media ponderada de las frecuencias presentes en la señal:
+
+$$\text{Centroide} = \frac{\sum_{k=1}^{M} f(k) \cdot \vert{}X(k)\vert{}}{\sum_{k=1}^{M} \vert{}X(k)\vert{}}$$
+
+
+* **¿Por qué es útil en playlists?**: Es el indicador directo del **brillo o timbre**. Pistas con un centroide espectral alto se perciben como brillantes, agudas, nítidas o estridentes (guitarras eléctricas, platillos, voces agudas). Un centroide bajo indica sonidos cálidos, oscuros o pesados (bajos, contrabajos, música de ambiente). Agrupar por centroide permite crear listas "cálidas" o "brillantes".
+
+#### 5. `dominant_freq_hz`, `detected_note` y `cents_deviation`
+
+* **¿Qué son?**:
+* `dominant_freq_hz`: La frecuencia $f$ con mayor magnitud $\vert{}X(f)\vert{}$ en el espectro.
+* `detected_note`: Conversión de esa frecuencia a la nota musical más cercana en la escala temperada mediante la relación $f = 440 \cdot 2^{(n-69)/12}$.
+* `cents_deviation`: La desviación en *cents* (100 cents = 1 semitono) respecto al tono exacto de la nota.
+
+
+* **¿Por qué es útil en playlists?**: Permite realizar **mezclas armónicas**. Si dos canciones terminan e inician en notas compatibles (misma tonalidad o tonalidades vecinas en el Círculo de Quintas), la transición fluirá sin discordancias armónicas.
+
+#### 6. `bpm` (Beats Per Minute) y `perceived_impetus`
+
+* **¿Qué son?**: `bpm` mide la cadencia del pulso rítmico, mientras que `perceived_impetus` mide la densidad de ataques o la fuerza impulsiva percibida en la pista.
+* **¿Por qué es útil en playlists?**: Son las métricas clave para listas enfocadas en la **actividad del usuario** (ej. entrenamientos, concentración). Un tema puede tener $120\text{ BPM}$ pero ser suave (bajo ímpetu) o extremadamente agresivo (alto ímpetu). Combinar ambas variables garantiza listas con la energía adecuada en el ritmo.
+
+---
 ## 📚 Agradecimientos y Créditos
 
 Este proyecto utiliza las excepcionales librerías decodificadoras *single-header* de código abierto creadas por **David Reid**:
 
 * [dr_libs](https://github.com/mackron/dr_libs) (`dr_mp3.h`, `dr_wav.h`, `dr_flac.h`), liberadas bajo dominio público / licencia MIT.
+
+### Resumen de términos:
+* **Libertad de uso:** Puedes ejecutar, estudiar y modificar este software libremente.
+* **Obligación de Copyleft:** Si distribuyes una versión modificada o un trabajo derivado de este proyecto, **debes** publicar el código fuente completo bajo la misma licencia GPLv3.
+* **Sin garantías:** El software se proporciona "tal cual", sin garantías explícitas o implícitas.
+
+Consulta el archivo [`LICENSE`](./LICENSE) para leer el texto completo de la licencia.

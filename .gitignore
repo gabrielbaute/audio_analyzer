@@ -1,0 +1,7 @@
+#Binarios y build
+bin/
+build/
+
+# Archivos de prueba:
+*.wav
+*.mp3

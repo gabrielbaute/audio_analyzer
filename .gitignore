@@ -5,3 +5,6 @@ build/
 # Archivos de prueba:
 *.wav
 *.mp3
+
+# Repomix
+repomix-output.xml

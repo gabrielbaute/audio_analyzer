@@ -1,10 +1,14 @@
 #Binarios y build
 bin/
 build/
+*.exe
+*.o
 
 # Archivos de prueba:
-*.wav
+*.flac
+*.m4a
 *.mp3
+*.wav
 
 # Repomix
 repomix-output.xml

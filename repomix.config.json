@@ -1,0 +1,46 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "fileSummary": true,
+    "directoryStructure": true,
+    "files": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "showLineNumbers": false,
+    "copyToClipboard": false,
+    "includeEmptyDirectories": false,
+    "parsableStyle": true,
+    "git": {
+      "includeDiffs": true,
+      "includeLogs": true,
+      "includeLogsCount": 50
+    }
+  },
+  "include": [],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "bin/**",
+      "build/**",
+      "LICENSE",
+      "include/dr_flac.h",
+      "include/dr_mp3.h",
+      "include/dr_wav.h",
+      "repomix.config.json",
+      "*.flac",
+      "*.m4a",
+      "*.mp3",
+      "*.wav",
+      "*.o",
+      "*.exe"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}
